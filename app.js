@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const mainRoutes = require("./backend/routes/htmlRoutes");
 
 app.use("/", mainRoutes);
 
