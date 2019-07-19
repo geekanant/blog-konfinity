@@ -30,8 +30,30 @@ function loginPage(req, res) {
             }
       });
   }   
-}       
+}
+
+function signupPage(req, res) {
+  const { name, email, password } = req.body;
+  if (!(name && email && password)) return res.render("signup");
+  else {
+    User.create({
+      name: name,
+      email: email,
+      password: password,
+    })
+      .then((user) => {
+        console.log("New User added");
+        req.session.user = user;
+
+        return res.redirect("/homepage");
+      })
+      .catch((err) => {
+        return res.render("signup");
+      });
+  }
+}   
 
 module.exports = {
-  loginPage: loginPage
+  loginPage: loginPage,
+  signupPage: signupPage
 };
