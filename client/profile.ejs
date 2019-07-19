@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>
+      homepage
+    </title>
+  </head>
+  <body class="text-center">
+  <h1>Hello <%= name %>
+</h1>
+    <table>
+       <form method="get" action="/homepage">
+        <button type="submit">Home Page</button>
+      </form>
+  
+      
+      <form method="get" action="/logout">
+        <button type="submit">Logout</button>
+      </form>
+      
+      </table>
+      
+     
+   <h2>My Added Blogs </h2>
+         <% for( var i = 0; i < blog.length; i++){ %>
+     <li><%= blog[i].dataValues.headingOfBlog%></li>
+      <li><%= blog[i].dataValues.contentOfBlog%></li>
+
+      <form method="get" action="/removeblog">
+            <button
+            value ="<%= blog[i].dataValues.id%>"
+             name="deleteBlogId" 
+            type="submit"
+            ></i> Remove 
+            </button>
+      </form>
+      
+      <form method="get" action="/editblog"><br>
+      <button name="editBlogId" value="<%= blog[i].dataValues.id%>" type="submit">Edit</button>
+      </form>
+      <br>
+      <hr>
+      <% } %>
+  </body>
+</html>
