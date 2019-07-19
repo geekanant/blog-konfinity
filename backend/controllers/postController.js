@@ -53,7 +53,27 @@ function signupPage(req, res) {
   }
 }   
 
+function blogPage(req, res) {
+  const { heading, content } = req.body;
+
+  Blog.create({
+    headingOfBlog: heading,
+    contentOfBlog: content,
+    emailOfUser: req.session.user.email,
+  })
+    .then((blog) => {
+      console.log("Blog Created");
+
+      return res.redirect("/homepage");
+    })
+    .catch((err) => {
+      console.log("Blog Not Created");
+      return res.redirect("/homepage");
+    });
+}
+
 module.exports = {
   loginPage: loginPage,
-  signupPage: signupPage
+  signupPage: signupPage,
+  blogPage: blogPage
 };
