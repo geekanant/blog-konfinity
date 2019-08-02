@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.set("views", __dirname + "/client/views");
+app.set("views", __dirname + "/client");
 app.engine("html", require("ejs").renderFile);
 app.set("view engine", "ejs");
 app.use(logger("dev")); 
