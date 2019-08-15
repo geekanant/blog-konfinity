@@ -1,100 +1,92 @@
-const express = require("express");
-const getController = require("../controllers/getController");
-const postController = require("../controllers/postController");
 const dbConn = require("../databases/mySqlite.js");
 const User = dbConn.User;
 const Blog = dbConn.Blog;
 
-const router = express.Router();
-const app = express();
+function indexPage(req, res) {
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else {
+    res.redirect("/homepage");
+  }
+}
 
-router.route("/").get(getController.indexPage);
-router.route("/homepage").get(getController.homePage);
-router.route("/login").get(getController.loginPage);
-router.route("/signup").get(getController.signupPage);
-router.route("/login").post(postController.loginPage);
-router.route("/signup").post(postController.signupPage);
-router.route("/blog").get(getController.blogPage);
-router.route("/blogshow").get(getController.blogShow);
-router.route("/profile").get(getController.profilePage);
-router.route("/blog").post(postController.blogPage);
-router.route("/editblog").get(getController.editBlogPage);
-router.route("/removeblog").get(getController.removeBlogPage);
-router.route("/editblog").post(postController.editBlogPage);
+function homePage(req, res) {
+  if (req.session.user) {
+    Blog.findAll({}).then((blog) => {
+      res.render("homepage", { blog: blog });
+    });
+  } else {
+    res.render("login");
+  }
+}
 
-router.get("/removeblog", function (req, res) {
-  var id = req.query;
+function loginPage(req, res) {
+  res.render("login");
+}
+
+function signupPage(req, res) {
+  res.render("signup");
+}
+
+function blogPage(req, res) {
+  res.render("blogpage");
+}
+
+function removeblog(req,res){
+  if (req.session.user) {
+     var id = req.body;
+  console.log(Object.keys(id)[0]);
   Blog.destroy({
     where: {
-      id: Object.values(id)[0],
-    },
-  }).then((blog) => {
-    res.render("profile", { name: req.session.user.name, blog: blog });
-  });
-});
-
-router.post("/editblog", function (req, res) {
-  const { heading, content, editBlogId } = req.body;
-
-  Blog.update(
-    { headingOfBlog: heading, contentOfBlog: content },
-    { where: { id: editBlogId } }
-  )
-    .then((blog) => {
-      console.log("Blog Created");
-      return res.redirect("/profile");
+        id: Object.keys(id)[0]
+    }
+    }).then((blog)=>{
+     //console.log("Fetched Taskes" ,blog);
+     res.render("profile");
     })
-    .catch((err) => {
-      console.log("Blog Not Created");
-      return res.redirect("/profile");
+   } else {
+    res.render("profile");    
+   }   
+ }
+
+function editBlogPage(req, res) {
+  var id = req.query;
+  console.log("Edit query", Object.values(id)[0]);
+  res.render("editblog", { id: Object.values(id)[0] });
+}
+
+function profilePage(req, res) {
+  if (req.session.user) {
+    Blog.findAll({
+      where: {
+        emailOfUser: req.session.user.email,
+      },
+    }).then((blog) => {
+      res.render("profile", { name: req.session.user.name, blog: blog });
     });
-});
+  } else {
+    res.render("profile");
+  }
+}
 
-//LAST TASK ROUTES
-
-router.post("/upvote", function (req, res) {
-  const { heading, content, editBlogId } = req.body;
-
-  Blog.update(
-    { headingOfBlog: heading, contentOfBlog: content },
-    { where: { id: editBlogId } }
-  )
-    .then((blog) => {
-      return res.redirect("/blogshow");
-    })
-    .catch((err) => {
-      return res.redirect("/blogshow");
+function blogShow(req, res) {
+  if (req.session.user) {
+    Blog.findAll({}).then((blog) => {
+      res.render("blogshow", { blog: blog });
     });
-});
+  } else {
+    res.render("blogshow");
+  }
+}
 
-router.post("/downvote", function (req, res) {
-  const { heading, content, editBlogId } = req.body;
-
-  Blog.update(
-    { headingOfBlog: heading, contentOfBlog: content },
-    { where: { id: editBlogId } }
-  )
-    .then((blog) => {
-      return res.redirect("/blogshow");
-    })
-    .catch((err) => {
-      return res.redirect("/blogshow");
-    });
-});
-
-router.post("/comment", function (req, res) {
-  const { heading, content, editBlogId } = req.body;
-
-  Blog.update(
-    { headingOfBlog: heading, contentOfBlog: content },
-    { where: { id: editBlogId } }
-  )
-    .then((blog) => {
-      return res.redirect("/blogshow");
-    })
-    .catch((err) => {
-      return res.redirect("/blogshow");
-    });
-});
-
-module.exports = router;
+module.exports = {
+  loginPage: loginPage,
+  homePage: homePage,
+  indexPage: indexPage,
+  signupPage: signupPage,
+  blogShow: blogShow,
+  profilePage: profilePage,
+  blogPage: blogPage,
+  removeblog:removeblog,
+  editBlogPage: editBlogPage,
+};
