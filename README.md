@@ -1,0 +1,1 @@
+A blog application with Express backend, sequelize database and EJS view engine.
