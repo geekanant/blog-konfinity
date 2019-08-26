@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>
+      Sign Up
+    </title>
+  </head>
+  <body class="text-center">
+    <table>
+      <form method="POST" action="/editblog">
+        <h1>Please Enter Blog</h1>
+          <tr>
+          <td><label for="inputName">Heading</label></td>
+          <td>
+            <input
+              type="text"
+              
+              name="heading"
+              placeholder="Enter Heading"
+              required
+              autofocus
+            />
+          </td>
+        </tr>
+        <tr>
+          <td><label for="inputEmail">Content</label></td>
+          <td>
+            <textarea type="text"
+             
+              name="content"
+              placeholder="content"
+              required
+              autofocus>
+              
+            </textarea>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>
+           
+             <button
+             value="<%= id %>"
+              name="editBlogId" 
+              type="submit"
+            ></i> Edit 
+            </button>
+          </td>
+        </tr>
+      </form>
+       
+    </table>
+  </body>
+</html>
