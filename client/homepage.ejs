@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>
+      homepage
+    </title>
+  </head>
+  <body class="text-center">
+    <table>
+       <form method="get" action="/blog">
+        <button type="submit">Create Blog</button>
+      </form>
+      
+      <form method="get" action="/profile">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">profile</button>
+      </form>
+      
+      <form method="get" action="/logout">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">logout</button>
+      </form>
+      
+      </table>
+      
+     
+   <h2> Added Blogs </h2>
+         <% for( var i = 0; i < blog.length; i++){ %>
+      <a href="/blogshow"> <li><%= blog[i].dataValues.headingOfBlog%></li></a>
+      <br>
+      <hr>
+      <% } %>
+  </body>
+</html>

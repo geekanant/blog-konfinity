@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>
+      homepage
+    </title>
+  </head>
+  <body class="text-center">
+     
+  <h2> Added Blogs </h2>
+    <% for( var i = 0; i < blog.length; i++){ %>
+      <li><%= blog[i].dataValues.headingOfBlog%></li>
+      <li><%= blog[i].dataValues.contentOfBlog%></li>
+      
+      <form method="post" action="/upvote">
+            <label name="totalLikes"></label>
+            <button
+            value ="<%= blog[i].dataValues.id%>"
+             name="blogId" 
+            type="submit"
+            ></i> Upvote  
+            </button>
+      </form>
+      
+      <form method="post" action="/downvote">
+            <label name="totalDislikes"></label>
+            <button
+            value ="<%= blog[i].dataValues.id%>"
+            name="blogId" 
+            type="submit"
+            ></i> Downvote  
+            </button>
+      </form>
+      
+      <form method="post" action="/comment">
+            <label name="totalComments"></label>
+            <button
+            value ="<%= blog[i].dataValues.id%>"
+            name="blogId" 
+            type="submit"
+            ></i> Comment  
+            </button>
+      </form>
+      
+      <br>
+      <hr>
+    
+      <% } %>
+  </body>
+</html>
